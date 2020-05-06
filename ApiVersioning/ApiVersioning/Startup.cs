@@ -24,15 +24,15 @@ namespace ApiVersioning
             {
                 options.DefaultApiVersion = new ApiVersion(1, 0);
                 options.AssumeDefaultVersionWhenUnspecified = true;
-                options.ReportApiVersions = true; 
-                options.ApiVersionReader = new QueryStringApiVersionReader("v");
+                options.ReportApiVersions = true;
 
-                // options.RouteConstraintName = "v";
-                // options.ApiVersionReader = new UrlSegmentApiVersionReader();
+                options.ApiVersionReader = new UrlSegmentApiVersionReader();
 
+                //options.ApiVersionReader = new QueryStringApiVersionReader("v");
                 // options.ApiVersionReader = new HeaderApiVersionReader("X-Version");
             });
-            services.AddApiVersioningServiceCollection();
+            services.AddApiVersioningServiceCollectionV1();
+            services.AddApiVersioningServiceCollectionV2();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
