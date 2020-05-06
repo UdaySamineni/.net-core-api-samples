@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ApiVersioning.Models
+namespace Models.v1._0
 {
     public class Order
     {

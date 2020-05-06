@@ -1,4 +1,4 @@
-﻿namespace ApiVersioning.Models
+﻿namespace Models.v1._1
 {
     public class Address
     {

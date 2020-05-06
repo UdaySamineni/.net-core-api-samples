@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ApiVersioning.Models
+namespace Models.v1._1
 {
     public class Customer
     {

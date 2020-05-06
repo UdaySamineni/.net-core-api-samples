@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using ApiVersioning.Models;
+﻿using System.Collections.Generic;
+using Business.v1._1.Customers.Abstractions;
 using Microsoft.AspNetCore.Mvc;
+using Models.v1._1;
 
 namespace ApiVersioning.Controllers.v1._1
 {
@@ -10,36 +10,18 @@ namespace ApiVersioning.Controllers.v1._1
     [ApiController]
     public class CustomerController : ControllerBase
     {
+        private readonly ICustomerRepository _customerRepository;
+
+        public CustomerController(ICustomerRepository customerRepository)
+        {
+            _customerRepository = customerRepository;
+        }
+
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<Customer>> Get()
         {
-            return Ok(new List<Customer>
-            {
-                new Customer
-                {
-                    Id = 1,
-                    Name = "Test 1",
-                    Phone = "(234) 456-3455",
-                    Address = new Address
-                    {
-                        Id = 1,
-                        AddressLine = "815 Grant Ave",
-                        City = "Charleston",
-                        State = "IL",
-                        Zip = 345694
-                    },
-                    Orders = new List<Order>
-                    {
-                        new Order
-                        {
-                            Id = 1,
-                            OrderNumber = 123,
-                            OrderDate = DateTime.Today
-                        }
-                    }
-                }
-            });
+            return Ok(_customerRepository.GetCustomers());
         }
 
         // GET api/values/5
