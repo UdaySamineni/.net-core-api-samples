@@ -5,8 +5,8 @@ using Models.v1;
 
 namespace ApiVersioning.Controllers.v1
 {
-    [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiVersion("1.0", Deprecated = true)]
+    [Route("api/customer")]
+    [ApiVersion("1")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
