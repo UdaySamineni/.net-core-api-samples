@@ -1,9 +1,8 @@
 ﻿using System.Linq;
-using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace ApiVersioning.Config.Swagger
@@ -12,41 +11,33 @@ namespace ApiVersioning.Config.Swagger
     {
         public static void UseCustomSwaggerApi(this IServiceCollection services)
         {
-            services.AddApiVersioning(options =>
-            {
-                options.DefaultApiVersion = new ApiVersion(1, 0);
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.ReportApiVersions = true;
-            });
-            services.AddApiVersioningServiceCollectionV1();
-            services.AddApiVersioningServiceCollectionV2();
-
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new Info
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "API Versioning Project",
                     Version = "v1"
                 });
-                options.SwaggerDoc("v2", new Info
+                options.SwaggerDoc("v2", new OpenApiInfo
                 {
                     Title = "API Versioning Project",
                     Version = "v2"
                 });
-                options.SwaggerDoc("v3", new Info
+                options.SwaggerDoc("v3", new OpenApiInfo
                 {
                     Title = "API Versioning Project",
                     Version = "v3"
                 });
-                options.OperationFilter<RemoveVersionFromParameter>();
-                options.DocumentFilter<ReplaceVersionWithExactValueInPath>();
-                options.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
-                    In = "header",
-                    Type = "apiKey"
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
                 });
+                options.DocumentFilter<SecurityRequirementsDocumentFilter>();
+                options.OperationFilter<RemoveVersionFromParameter>();
+                options.DocumentFilter<ReplaceVersionWithExactValueInPath>();
                 options.DocInclusionPredicate((docName, description) =>
                 {
                     if (!description.TryGetMethodInfo(out var methodInfo)) return false;
